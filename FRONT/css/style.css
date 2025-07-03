@@ -109,6 +109,12 @@ body {
     justify-content: center;
     height: 100%;
 }
+.card .card-title,
+.card .card-subtitle {
+    text-align: center;
+    margin-bottom: 1.1rem;
+    margin-top: 0.7rem;
+}
 @media (max-width: 768px) {
     .filter-bar {
         flex-direction: column;
@@ -164,4 +170,11 @@ audio * {
     color: #2575fc !important;
     box-shadow: none !important;
     border-color: #2575fc !important;
+}
+#nav-all {
+    color: #fff !important;
+}
+.row.g-4 > .col-12,
+.row.g-4 > .col-md-6 {
+    margin-bottom: 2.2rem;
 }
