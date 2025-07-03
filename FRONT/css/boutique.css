@@ -1,0 +1,51 @@
+body {
+    background: #f6f8fa;
+}
+.img-fluid.rounded.shadow {
+    border: 3px solid #e3e8f0;
+    background: #fff;
+}
+h1,
+h3,
+h4,
+h5 {
+    font-family: "Montserrat", Arial, sans-serif;
+}
+.btn-primary,
+.btn-success {
+    font-family: "Montserrat", Arial, sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.badge.bg-success {
+    font-size: 1em;
+    padding: 0.5em 1em;
+    border-radius: 12px;
+}
+.text-warning {
+    font-weight: 600;
+}
+.border.rounded.p-2.bg-white {
+    font-size: 1.04em;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #2575fc11;
+}
+form textarea.form-control {
+    resize: none;
+    font-size: 1em;
+}
+@media (max-width: 768px) {
+    .img-fluid.rounded.shadow {
+        max-height: 220px;
+    }
+    h1 {
+        font-size: 1.3rem;
+    }
+    h3 {
+        font-size: 1.1rem;
+    }
+}
+.audio-boutique-block {
+    margin-top: 2rem;
+}

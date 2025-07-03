@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Catalogue produits</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link href="../css/style.css" rel="stylesheet" />
+        <link href="../css/catalogue.css" rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;700&display=swap"
+            rel="stylesheet"
+        />
+        <script src="../javascript/products.js"></script>
+        <script src="../javascript/catalogue.js"></script>
+    </head>
+    <body class="bg-light">
+        <div class="text-center pt-4 pb-1">
+            <div class="logo-ze">Ze Boutik</div>
+            <div class="slogan-ze">Ecommerce du Turfu</div>
+            <a
+                href="boutique.html"
+                class="btn btn-primary mt-2"
+                style="
+                    font-size: 1.08rem;
+                    font-weight: 500;
+                    letter-spacing: 1px;
+                    margin-bottom: 20px;
+                "
+                >Visiter notre boutique</a
+            >
+        </div>
+        <nav class="navbar header-main navbar-expand-lg sticky-top">
+            <div class="container-fluid">
+                <a
+                    class="btn btn-outline-primary ms-2 text-primary"
+                    id="nav-all"
+                    href="#"
+                    onclick="switchView('all', this)"
+                    style="font-weight: 600; letter-spacing: 1px"
+                >
+                    Tous les produits
+                </a>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            id="nav-without-photo"
+                            href="#"
+                            onclick="switchView('withoutPhoto', this)"
+                            >Produits sans photo</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            id="nav-ready"
+                            href="#"
+                            onclick="switchView('ready', this)"
+                            >Prêts à être publiés</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container py-4">
+            <div
+                class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2 align-items-center"
+            >
+                <div class="filter-bar mb-0 flex-grow-1">
+                    <label for="statusFilter" class="form-label mb-0"
+                        >Filtrer par statut :</label
+                    >
+                    <div
+                        class="d-none d-md-flex gap-2 justify-content-around"
+                        id="statusBtnGroup"
+                    >
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            data-status="Publié"
+                        >
+                            Publié
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            data-status="Photo à ajouter"
+                        >
+                            Photo à ajouter
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            data-status="Description effectuée"
+                        >
+                            Description effectuée
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            data-status="Nouveau"
+                        >
+                            Nouveau
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            data-status="Photo non analysable"
+                        >
+                            Photo non analysable
+                        </button>
+                    </div>
+                    <select
+                        id="statusFilter"
+                        class="form-select d-md-none"
+                        style="max-width: 220px"
+                    >
+                        <option value="Publié">Publié</option>
+                        <option value="Photo à ajouter">Photo à ajouter</option>
+                        <option value="Description effectuée">
+                            Description effectuée
+                        </option>
+                        <option value="Nouveau">Nouveau</option>
+                        <option value="Photo non analysable">
+                            Photo non analysable
+                        </option>
+                    </select>
+                </div>
+                <div class="w-100"></div>
+                <div
+                    class="d-flex flex-row justify-content-center btn-ajout-actions-row mt-2"
+                    style="width: 100%"
+                >
+                    <a
+                        href="https://forms.fillout.com/t/vGzeQFmXwfus"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-success bg-opacity-10 text-success btn-ajout-action"
+                        style="
+                            font-family: 'Montserrat', Arial, sans-serif;
+                            letter-spacing: 1px;
+                            white-space: nowrap;
+                            font-size: 0.85rem;
+                            min-width: 170px;
+                            max-width: 220px;
+                            color: #fff !important;
+                        "
+                    >
+                        ➕ Ajouter un produit
+                    </a>
+                    <a
+                        href="#"
+                        class="btn btn-danger btn-ajout-action"
+                        style="
+                            font-family: 'Montserrat', Arial, sans-serif;
+                            letter-spacing: 1px;
+                            white-space: nowrap;
+                            font-size: 0.85rem;
+                            min-width: 170px;
+                            max-width: 220px;
+                            color: #fff !important;
+                            background-color: #dc3545 !important;
+                            border: none;
+                        "
+                    >
+                        📸 Ajouter une photo
+                    </a>
+                </div>
+            </div>
+            <div id="product-list" class="row g-4"></div>
+        </div>
+    </body>
+</html>
