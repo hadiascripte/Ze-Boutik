@@ -1,8 +1,8 @@
 let allProducts = [];
 let currentView = "all";
 let currentStatus = "all";
-let pollingInterval = null;
-let lastRefresh = null;
+let lastUpdateTime = null;
+let updateTimer = null;
 
 function switchView(view, el) {
     currentView = view;
@@ -100,7 +100,6 @@ function renderProducts(products) {
             "bg-success bg-opacity-10 text-success border border-success",
         "A publier": "bg-success bg-opacity-10 text-success border border-success",
         Publié: "bg-success text-white",
-        Nouveau: "bg-primary bg-opacity-10 text-primary border border-primary",
         "Photo non analysable": "bg-warning text-dark",
     };
     products.forEach((p, idx) => {
@@ -174,7 +173,7 @@ async function publishAndRefresh(id, btn) {
     btn.textContent = "Publié !";
     setTimeout(() => {
         btn.classList.remove("btn-flash-success");
-        loadProducts();
+        loadProducts(); // Actualiser la page après le changement de statut
     }, 3000);
 }
 
@@ -192,7 +191,7 @@ async function validateProduct(productId, btn) {
     btn.textContent = "Validé !";
     setTimeout(() => {
         btn.classList.remove("btn-flash-success");
-        loadProducts();
+        loadProducts(); // Actualiser la page après le changement de statut
     }, 3000);
 }
 window.toggleDetails = toggleDetails;
@@ -200,37 +199,90 @@ window.publishAndRefresh = publishAndRefresh;
 window.validateProduct = validateProduct;
 
 async function loadProducts() {
+    const currentState = saveCurrentState();
     allProducts = await fetchProducts();
+    // Restaurer l'état AVANT de rendre la vue
+    restoreCurrentState(currentState);
     renderCurrentView();
 }
 
-// Rafraîchissement automatique basé sur le flag (peut être commenté pour désactiver)
-async function checkForUpdate() {
-    const res = await fetch("/BACKEND/refresh.flag?" + Date.now());
-    const timestamp = await res.text();
-    if (lastRefresh !== null && timestamp !== lastRefresh) {
-        // Vérifier si un audio est en cours de lecture
-        const audios = document.querySelectorAll("audio");
-        let isPlaying = false;
-        audios.forEach((audio) => {
-            if (!audio.paused) isPlaying = true;
-        });
-        if (!isPlaying) {
-            await loadProducts();
-        } else {
-            // Optionnel : afficher une notification "Mise à jour disponible"
-            if (!document.getElementById("update-notif")) {
-                const notif = document.createElement("div");
-                notif.id = "update-notif";
-                notif.className = "alert alert-info position-fixed top-0 end-0 m-3";
-                notif.innerHTML =
-                    "Une mise à jour est disponible. Elle sera appliquée à la fin de la lecture.";
-                document.body.appendChild(notif);
+// Fonction pour sauvegarder l'état actuel
+function saveCurrentState() {
+    return {
+        view: currentView,
+        status: currentStatus,
+    };
+}
+
+// Fonction pour restaurer l'état actuel
+function restoreCurrentState(state) {
+    if (state) {
+        console.log("Restauration de l'état:", state);
+        currentView = state.view;
+        currentStatus = state.status;
+
+        // Restaurer les classes actives visuellement
+        if (currentStatus !== "all") {
+            const btnGroup = document.getElementById("statusBtnGroup");
+            if (btnGroup) {
+                btnGroup.querySelectorAll("button").forEach((b) => {
+                    const isActive = b.getAttribute("data-status") === currentStatus;
+                    b.classList.toggle("active", isActive);
+                    console.log(
+                        `Bouton ${b.getAttribute("data-status")} actif:`,
+                        isActive
+                    );
+                });
+            }
+            const select = document.getElementById("statusFilter");
+            if (select) {
+                select.value = currentStatus;
+                console.log("Select mis à jour avec:", currentStatus);
             }
         }
+
+        if (currentView !== "all") {
+            document.querySelectorAll(".navbar-nav .nav-link").forEach((l) => {
+                const isActive = l.id === `nav-${currentView}`;
+                l.classList.toggle("active", isActive);
+                console.log(`Lien ${l.id} actif:`, isActive);
+            });
+        }
     }
-    lastRefresh = timestamp;
 }
-// setInterval(checkForUpdate, 2000); // Désactivé pour éviter le rafraîchissement automatique
+
+// Fonction pour vérifier les mises à jour
+async function checkForStatusUpdates() {
+    try {
+        const response = await fetch(
+            "/BACKEND/index.php?route=products/last-update"
+        );
+        const data = await response.json();
+
+        if (data.lastUpdate && lastUpdateTime !== data.lastUpdate) {
+            // Si c'est la première vérification, on enregistre juste le timestamp
+            if (lastUpdateTime === null) {
+                lastUpdateTime = data.lastUpdate;
+                return;
+            }
+
+            // Si il y a eu un changement, on attend 3 secondes puis on actualise
+            if (updateTimer) {
+                clearTimeout(updateTimer);
+            }
+
+            updateTimer = setTimeout(async () => {
+                console.log("Mise à jour détectée, actualisation de la page...");
+                await loadProducts();
+                lastUpdateTime = data.lastUpdate;
+            }, 3000);
+        }
+    } catch (error) {
+        console.error("Erreur lors de la vérification des mises à jour:", error);
+    }
+}
+
+// Démarrer la vérification périodique (toutes les 2 secondes)
+setInterval(checkForStatusUpdates, 2000);
 
 loadProducts();

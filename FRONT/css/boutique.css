@@ -8,6 +8,41 @@ body {
     border-radius: 2rem;
     box-shadow: 0 8px 32px 0 rgba(37, 117, 252, 0.13);
     transition: transform 0.3s cubic-bezier(0.4, 2, 0.6, 1), box-shadow 0.3s;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* Container pour aligner la hauteur de la photo avec le bloc d'informations */
+.product-image-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.product-info-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* Réduire la taille de l'image */
+.img-fluid.rounded.shadow {
+    border: 3px solid #e3e8f0;
+    background: #fff;
+    border-radius: 2rem;
+    box-shadow: 0 8px 32px 0 rgba(37, 117, 252, 0.13);
+    transition: transform 0.3s cubic-bezier(0.4, 2, 0.6, 1), box-shadow 0.3s;
+    height: 80%;
+    object-fit: cover;
+    width: 80%;
+    max-height: 400px;
+    margin: auto;
+    display: block;
 }
 .img-fluid.rounded.shadow:hover {
     transform: scale(1.04) rotate(-1deg);
@@ -162,7 +197,36 @@ h5 {
 .nav-cat.active {
     background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%) !important;
     color: #fff !important;
-    box-shadow: 0 2px 12px #2575fc22;
+    box-shadow: 0 2px 12px #2575fc22 !important;
+}
+
+/* Force l'application du style actif même avec Bootstrap */
+.nav-cat.active,
+.nav-cat.active:hover,
+.nav-cat.active:focus,
+.nav-link.nav-cat.active,
+.nav-link.nav-cat.active:hover,
+.nav-link.nav-cat.active:focus {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 12px #2575fc22 !important;
+    border-color: transparent !important;
+}
+
+/* Surcharge spécifique pour Bootstrap nav-link */
+.nav-link.nav-cat.active {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 12px #2575fc22 !important;
+    border-color: transparent !important;
+}
+
+/* Règle de débogage pour vérifier que la classe active est bien appliquée */
+.nav-cat.active {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 12px #2575fc22 !important;
+    border-color: transparent !important;
 }
 @media (max-width: 768px) {
     .boutique-logo-anim {

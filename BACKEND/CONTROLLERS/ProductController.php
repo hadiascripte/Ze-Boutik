@@ -37,4 +37,29 @@ class ProductController {
         header('Content-Type: application/json');
         echo json_encode($result);
     }
+
+    public function getLastUpdate() {
+        $data = $this->model->getAllProducts();
+        $lastUpdate = null;
+        
+        // Trouver la date de création la plus récente (createdTime existe toujours dans Airtable)
+        if (isset($data['records']) && is_array($data['records'])) {
+            foreach ($data['records'] as $record) {
+                if (isset($record['createdTime'])) {
+                    $currentUpdate = $record['createdTime'];
+                    if ($lastUpdate === null || $currentUpdate > $lastUpdate) {
+                        $lastUpdate = $currentUpdate;
+                    }
+                }
+            }
+        }
+        
+        // Si aucune date trouvée, utiliser la date actuelle
+        if ($lastUpdate === null) {
+            $lastUpdate = date('Y-m-d H:i:s');
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode(['lastUpdate' => $lastUpdate]);
+    }
 } 

@@ -17,6 +17,8 @@ if ($route === 'products' && $method === 'GET') {
     $controller->publish();
 } elseif ($route === 'products/validate' && $method === 'POST') {
     $controller->validate();
+} elseif ($route === 'products/last-update' && $method === 'GET') {
+    $controller->getLastUpdate();
 } else {
     http_response_code(404);
     echo json_encode(['error' => 'Route non trouvée']);
